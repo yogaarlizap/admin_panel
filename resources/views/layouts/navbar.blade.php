@@ -34,6 +34,14 @@
         </li>
 
         <li class="nav-item">
+            <a href="{{ route('users.index') }}"
+                class="nav-link {{ setActive('users.index') }}">
+                <i class="nav-icon fas fa-folder"></i>
+                <p>User</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();
             document.getElementById('logout-form').submit();">
                 <i class="nav-icon fas fa-power-off text-danger"></i>

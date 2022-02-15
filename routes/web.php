@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,4 +25,5 @@ Route::resource('products', ProductController::class);
 Route::resource('categories', KategoriController::class);
 Route::resource('penjualan', PenjualanController::class);
 Route::get('penjualan/detail/{id}', [PenjualanController::class, 'detail_pesanan'])->name('pesanan.detail');
+Route::resource('users', UserController::class);
 
