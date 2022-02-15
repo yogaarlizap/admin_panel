@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-body ">
 
-                    <table class="table table-bordered" id="produk_table">
+                    <table class="table table-bordered table-hover" id="produk_table">
                         <thead>
                             <tr>
                                 <th width="30">No</th>
@@ -116,8 +116,8 @@
                 dataType : "JSON",
                 success:function (data){
                     $('#modal-form').modal('show');
-                    $('#modal-form form')[0].reset();
                     $('.modal-title').text('Edit Produk');
+                    $('#id').val(data.id);
                     $('#nama_produk').val(data.nama);
                     $('#kategori').val(data.kategori_id).change();
                     $('#stok').val(data.jumlah_stok);

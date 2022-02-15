@@ -1,34 +1,75 @@
 @extends('layouts.layout')
 
 @section('title')
-    Category
+    Kategori
 @endsection
 
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">Category</li>
+    <li class="breadcrumb-item active">Kategori</li>
 @endsection
 
 @section('content')
     <div class="row">
-        <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header">
-                    {{-- <a onclick="addForm()" class="btn btn-success"><i class="fa fa-plus-circle"></i> Tambah</a> --}}
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <a onclick="addForm()" class="btn btn-success"><i class="fa fa-plus-circle"></i> Tambah Kategori</a>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
 
-                    <table class="table table-striped">
+                    <table class="table table-bordered table-hover" id="kategori_table">
                         <thead>
                             <tr>
-                                <th width="30">No</th>
-                                <th>Nama Kategori</th>
-                                <th width="100">Aksi</th>
+                                <th class="text-center" width="30">No</th>
+                                <th class="text-center">Nama Kategori</th>
+                                <th class="text-center">Gambar</th>
+                                <th class="text-center" width="100">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                            @foreach ($categories as $category)
+                                <tr>
+                                    <td class="align-middle text-center">
+                                        {{ ++$no }}
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        {{ $category->nama }}
+                                    </td>
+                                    <td class="text-center">
+                                        <img src="{{ asset('storage/images/kategori/'.$category->gambar) }}" style="width: 100px; height: 100px;" alt="">
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <a onclick="editForm({{ $category->id }})" class="btn-sm btn-primary"><i class="fa fa-pencil-alt"></i></a>
+                                        <a onclick="deleteButton({{ $category->id }})" class="btn-sm btn-danger"><i class="fa fa-times"></i></a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
                     </table>
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title-delete"></h3>
+                    <button type="button" class="close" id="close-modal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center" id="smallBody">
+                    <div>
+                        <label id="text"></label>
+                    </div>
+                </div>
+                <div class="modal-footer" id="btn-group">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger" id="button">Yes!</button>
                 </div>
             </div>
         </div>
@@ -38,5 +79,37 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('action/categories/categories.js') }}"></script>
+    <script>
+        $(function(){
+            $('#kategori_table').DataTable();
+        })
+
+        function addForm(){
+            $('#modal-form').modal('show');
+            $('#modal-form form')[0].reset();
+            $('.modal-title').html('Buat Kategori Baru');
+        }
+
+        function editForm(id){
+            $.ajax({
+                url: "categories/"+id,
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    $('#modal-form').modal('show');
+                    $('.modal-title').html('Edit Kategori');
+                    $('#kategori').val(data.nama);
+                },
+                error: function(){
+                    alert('Gagal Ambil Data!');
+                }
+            })
+        }
+
+        function deleteButton(id){
+            $('#smallModal').modal('show');
+            $('.modal-title-delete').html('Delete Kategori');
+            $('#text').html('Anda yakin ingin menghapus kategori?');
+        }
+    </script>
 @endsection
