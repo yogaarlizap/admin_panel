@@ -68,7 +68,9 @@ class KategoriController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = Category::find($id);
+
+        echo json_encode($category);
     }
 
     /**
@@ -98,6 +100,7 @@ class KategoriController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $kategori = Category::find($id);
+        $kategori->delete();
     }
 }
