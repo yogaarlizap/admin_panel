@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category\Category;
 use App\Models\Product\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -40,7 +41,29 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nama_produk' => 'required',
+            'kategori' => 'required',
+            'stok' => 'required',
+            'harga' => 'required',
+            'berat' => 'required',
+            'gambar' => 'required',
+            'keterangan' => 'required',
+        ]);
+
+        $nama_gambar = $request->file('gambar')->getClientOriginalName();
+
+        $request->file('gambar')->storeAs('/public/images/product', $nama_gambar);
+
+
+        $product = new Product;
+        $product->nama = $request->nama_produk;
+        $product->kategori_id = $request->kategori;
+        $product->jumlah_stok = $request->stok;
+        $product->berat = $request->berat;
+        $product->gambar = $nama_gambar;
+        $product->keterangan = $request->keterangan;
+        $product->save();
     }
 
     /**
@@ -76,7 +99,29 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $validator = Validator::make($request->all(), [
+            'nama_produk' => 'required',
+            'kategori' => 'required',
+            'stok' => 'required',
+            'harga' => 'required',
+            'berat' => 'required',
+            'gambar' => 'required',
+            'keterangan' => 'required',
+        ]);
+
+        $nama_gambar = $request->file('gambar')->getClientOriginalName();
+
+        $request->file('gambar')->storeAs('C:\xampp\htdocs\nara-etnic\public\assets\product', $nama_gambar);
+
+        $product = Product::find($id);
+        $product->nama = $request->nama_produk;
+        $product->kategori_id = $request->kategori;
+        $product->jumlah_stok = $request->stok;
+        $product->berat = $request->berat;
+        $product->gambar = $nama_gambar;
+        $product->keterangan = $request->keterangan;
+        $product->update();
     }
 
     /**
@@ -87,6 +132,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        $product->delete();
     }
 }

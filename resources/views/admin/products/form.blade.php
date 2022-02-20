@@ -1,7 +1,7 @@
 <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
   <div class="modal-dialog modal-md">
     <div class="modal-content">
-      <form class="form-horizontal" data-toggle="validator" method="POST">
+      <form class="form-horizontal" method="POST" enctype="multipart/form-data" data-toggle="validator">
         @method('POST')
         @csrf
         <div class="modal-header">
@@ -59,7 +59,7 @@
                 </div>
             </div>
             <div class="mt-2">
-                <label for="uom" class="col-md-6 control-label">Keterangan</label>
+                <label for="keterangan" class="col-md-6 control-label">Keterangan</label>
                 <div class="col-md-12">
                   <input id="keterangan" type="text" class="form-control keterangan" name="keterangan" autofocus required>
                   <span class="help-block with-errors"></span>

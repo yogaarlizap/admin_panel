@@ -43,7 +43,7 @@
                                         {{ $product->nama }}
                                     </td>
                                     <td class="align-middle text-center">
-                                        {{ $product->kategori->nama }}
+                                        {{ $product->kategori['nama']??"Null" }}
                                     </td>
                                     <td class="align-middle text-center">
                                         {{ $product->jumlah_stok }}
@@ -87,7 +87,7 @@
                 </div>
                 <div class="modal-footer" id="btn-group">
                     <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger" id="button">Yes!</button>
+                    <button type="submit" class="btn btn-danger" id="delete">Yes!</button>
                 </div>
             </div>
         </div>
@@ -99,17 +99,46 @@
 
 @section('script')
     <script>
+        var table, save_method;
         $(function(){
-            $('#produk_table').DataTable();
+            table = $('#produk_table').DataTable();
+
+            $('#modal-form form').validator().on('submit', function(e){
+                if(!e.isDefaultPrevented()){
+                    var id = $('#id').val();
+                    if(save_method == "add") url = "{{ route('products.store') }}";
+                    else url = "products/"+id;
+
+                    $.ajax({
+                        url : url,
+                        type : "POST",
+                        data : new FormData(this),
+                        success : function(data){
+                            $('#modal-form').modal('hide');
+                            table.ajax.reload();
+                        },
+                        error : function(){
+                            alert("Tidak dapat menyimpan data!");
+                        }
+                    });
+                    return false;
+                }
+            });
         });
 
+
         function addForm(){
+            save_method = "add";
+            $('input[name = _method]').val("POST");
             $('#modal-form').modal('show');
             $('#modal-form form')[0].reset();
             $('.modal-title').html('Buat Produk Baru');
         }
 
         function editForm(id){
+            save_method = "edit";
+            $('input[name = _method]').val("PATCH");
+            $('#modal-form form')[0].reset();
             $.ajax({
                 url: "products/"+id,
                 type : "GET",
@@ -151,6 +180,24 @@
             $('#smallModal').modal('show');
             $('.modal-title-delete').text('Delete Produk');
             $('#text').text('Anda yakin ingin menghapus produk?');
+            $('#smallModal').validator().on('click','#delete', function(e){
+            if(!e.isDefaultPrevented()){
+                $.ajax({
+                    url : "products/"+id,
+                    type : "POST",
+                    data : {'_method' : 'DELETE', '_token' : $('meta[name=csrf-token]').attr('content')},
+                    success : function(data){
+                        $('#smallModal').modal('hide');
+                        location.reload();
+
+                    },
+                    error : function(){
+                        alert("Tidak dapat menghapus data!");
+                    }
+                });
+                return false;
+            }
+            });
         }
     </script>
 @endsection
