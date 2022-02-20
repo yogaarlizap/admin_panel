@@ -1,7 +1,7 @@
-<div class="modal fade" id="modal-formEdit" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal-edit-form" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
-            <form class="form-horizontal" method="POST" enctype="multipart/form-data" data-toggle="validator" id="edit_kategori">
+            <form class="form-horizontal" method="POST" enctype="multipart/form-data" id="edit_kategori">
             @method('PATCH')
             @csrf
                 <div class="modal-header">
@@ -20,18 +20,18 @@
                                 <span class="help-block with-errors"></span>
                             </div>
                         </div>
-                        <div class="mt-2">
+                        {{-- <div class="mt-2">
                             <label for="gambar_edit" class="col-md-6 control-label">Gambar</label>
                             <div class="col-md-12">
                                 <input type="file" name="gambar_edit" id="gambar_edit" class="form-control" accept="image/png, image/jpeg" autofocus>
                                 <span class="help-block with-errors"></span>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="modal-footer" id="btn-group">
                     <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success" id="button">Yes!</button>
+                    <button type="submit" class="btn btn-success" id="update">Yes!</button>
                 </div>
             </form>
         </div>

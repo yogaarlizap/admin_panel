@@ -75,7 +75,7 @@
         </div>
     </div>
 
-    {{-- @include('admin.categories.form') --}}
+    @include('admin.categories.form')
     @include('admin.categories.formEdit')
 @endsection
 
@@ -85,41 +85,41 @@
         $(function(){
             table = $('#kategori_table').DataTable();
 
-            // $('#modal-form form').validator().on('submit', function(e){
-            //     if(!e.isDefaultPrevented()){
-            //         $.ajax({
-            //             url : "{{ route('categories.store') }}",
-            //             type : "POST",
-            //             data : new FormData(this),
-            //             success : function(data){
-            //                 $('#modal-form').modal('hide');
-            //                 table.ajax.reload();
-            //             },
-            //             error : function(){
-            //                 alert("Tidak dapat menyimpan data!");
-            //             }
-            //         });
-            //         return false;
-            //     }
-            // });
+            $('#modal-form form').validator().on('submit', function(e){
+                if(!e.isDefaultPrevented()){
+                    $.ajax({
+                        url : "{{ route('categories.store') }}",
+                        type : "POST",
+                        data : new FormData(this),
+                        success : function(data){
+                            $('#modal-form').modal('hide');
+                            table.ajax.reload();
+                        },
+                        error : function(){
+                            alert("Tidak dapat menyimpan data!");
+                        }
+                    });
+                    return false;
+                }
+            });
 
-            $('#modal-formEdit #edit_kategori').validator().on('submit', function(e){
-            let id = $('#id_edit').val();
-            if(!e.isDefaultPrevented()){
-                $.ajax({
-                    url : "categories/"+id,
-                    type : "PATCH",
-                    data : new FormData(this),
-                    success : function(data){
-                        $('#modal-formEdit').modal('hide');
-                        // location.reload();
-                    },
-                    error : function(){
-                        alert("Tidak dapat menyimpan data!");
-                    }
-                });
-                return false;
-            }
+            $('#modal-edit-form form').validator().on('submit',function(e){
+                let id = $('#id_edit').val();
+                if(!e.isDefaultPrevented()){
+                    $.ajax({
+                        url : "categories/"+id,
+                        type : "PATCH",
+                        data : $('#modal-edit-form form').serialize(),
+                        success : function(data){
+                            $('#modal-edit-form').modal('hide');
+                            location.reload();
+                        },
+                        error : function(){
+                            alert("Tidak dapat menyimpan data!");
+                        }
+                    });
+                    return false;
+                }
             });
         })
 
@@ -137,7 +137,7 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function(data){
-                    $('#modal-formEdit').modal('show');
+                    $('#modal-edit-form').modal('show');
                     $('.modal-title').html('Edit Kategori');
                     $('#id_edit').val(data.id);
                     $('#kategori_edit').val(data.nama);

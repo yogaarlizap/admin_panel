@@ -47,9 +47,13 @@
                                     </td>
                                     <td class="text-center">
                                         @if ($list->status == 1)
-                                            Belum Lunas
-                                        @else
-                                            Lunas
+                                            Belum Dibayar
+                                        @elseif ($list->status == 2)
+                                            Sudah Dibayar
+                                        @elseif ($list->status == 3)
+                                            Sedang Dikirim
+                                        @elseif ($list->status == 4)
+                                            Selesai
                                         @endif
                                     </td>
                                     <td class="text-center">
@@ -69,6 +73,7 @@
                                     </td>
                                     <td class="align-middle text-center">
                                         <a onclick="detailForm({{ $list->id }})" class="btn-sm btn-secondary"><i class="fa fa-eye"></i></a>
+                                        <a onclick="editButton({{ $list->id }})" class="btn-sm btn-primary"><i class="fa fa-pencil-alt"></i></a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -80,14 +85,72 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <form class="form-horizontal" method="POST" enctype="multipart/form-data" data-toggle="validator">
+                    @method('PATCH')
+                    @csrf
+                    <div class="modal-header">
+                        <h3 class="modal-title">Edit Status Pesanan</h3>
+                        <button type="button" class="close" id="close-modal" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="smallBody">
+                        <input type="hidden" id="id" name="id">
+                        <div class="form-group">
+                            <div class="mt-2">
+                                <label for="status" class="col-md-6 control-label">Status</label>
+                                <div class="col-md-12">
+                                    <select name="status" class="form-control status" id="status">
+                                        <option value="">Pilih Status</option>
+                                        <option value="1">Belum Dibayar</option>
+                                        <option value="2">Sudah Dibayar</option>
+                                        <option value="3">Sedang Dikirim</option>
+                                        <option value="4">Selesai</option>
+                                    </select>
+                                    <span class="help-block with-errors"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" id="btn-group">
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success" id="button">Yes!</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     @include('admin.penjualan.detail')
 @endsection
 
 @section('script')
     <script>
-        var pesanan_detail;
+        var table, pesanan_detail;
         $(function(){
-            $('#penjualan_table').DataTable();
+            table = $('#penjualan_table').DataTable();
+
+            $('#modal-edit form').validator().on('submit',function(e){
+                let id = $('#id').val();
+                if(!e.isDefaultPrevented()){
+                    $.ajax({
+                        url : "penjualan/"+id,
+                        type : "PATCH",
+                        data : $('#modal-edit form').serialize(),
+                        success : function(data){
+                            $('#modal-edit').modal('hide');
+                            location.reload();
+                        },
+                        error : function(){
+                            alert("Tidak dapat menyimpan data!");
+                        }
+                    });
+                    return false;
+                }
+            });
         })
 
         function detailForm(id){
@@ -116,6 +179,22 @@
                 },
                 error: function(){
                     alert('Gagal Ambil Data!');
+                }
+            })
+        }
+
+        function editButton(id){
+            $.ajax({
+                url: "penjualan/"+id,
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    $('#modal-edit').modal('show');
+                    $('#id').val(data.id);
+                    $('#status').val(data.status).change();
+                },
+                error: function(){
+                    alert('gagal');
                 }
             })
         }

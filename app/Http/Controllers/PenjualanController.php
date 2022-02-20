@@ -95,7 +95,9 @@ class PenjualanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $pesanan = Penjualan::find($id);
+        $pesanan->status = $request->status;
+        $pesanan->update();
     }
 
     /**

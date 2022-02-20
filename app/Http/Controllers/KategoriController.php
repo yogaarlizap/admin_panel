@@ -80,13 +80,13 @@ class KategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $nama_gambar = $request->file('gambar_edit')->getClientOriginalName();
+        // $nama_gambar = $request->file('gambar_edit')->getClientOriginalName();
 
-        $request->file('gambar_edit')->storeAs('/public/images/kategori', $nama_gambar);
+        // $request->file('gambar_edit')->storeAs('/public/images/kategori', $nama_gambar);
 
         $kategori = Category::find($id);
         $kategori->nama = $request->kategori_edit;
-        $kategori->gambar = $nama_gambar;
+        // $kategori->gambar = $nama_gambar;
         $kategori->update();
     }
 
