@@ -37,7 +37,14 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $nama_gambar = $request->file('gambar')->getClientOriginalName();
+
+        $request->file('gambar')->storeAs('/public/images/kategori', $nama_gambar);
+
+        $kategori = new Category;
+        $kategori->nama = $request->kategori;
+        $kategori->gambar = $nama_gambar;
+        $kategori->save();
     }
 
     /**
@@ -73,7 +80,14 @@ class KategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $nama_gambar = $request->file('gambar_edit')->getClientOriginalName();
+
+        $request->file('gambar_edit')->storeAs('/public/images/kategori', $nama_gambar);
+
+        $kategori = Category::find($id);
+        $kategori->nama = $request->kategori_edit;
+        $kategori->gambar = $nama_gambar;
+        $kategori->update();
     }
 
     /**

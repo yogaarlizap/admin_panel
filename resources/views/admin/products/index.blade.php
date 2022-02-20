@@ -95,6 +95,7 @@
 
     @include('admin.products.form')
     @include('admin.products.detail')
+    @include('admin.products.formEdit')
 @endsection
 
 @section('script')
@@ -105,17 +106,35 @@
 
             $('#modal-form form').validator().on('submit', function(e){
                 if(!e.isDefaultPrevented()){
-                    var id = $('#id').val();
-                    if(save_method == "add") url = "{{ route('products.store') }}";
-                    else url = "products/"+id;
+                    // if(save_method == "add") url = "{{ route('products.store') }}";
+                    // else url = "products/"+id;
 
                     $.ajax({
-                        url : url,
+                        url : "{{ route('products.store') }}",
                         type : "POST",
                         data : new FormData(this),
                         success : function(data){
                             $('#modal-form').modal('hide');
                             table.ajax.reload();
+                        },
+                        error : function(){
+                            alert("Tidak dapat menyimpan data!");
+                        }
+                    });
+                    return false;
+                }
+            });
+
+            $('#modal-edit-form form').validator().on('submit',function(e){
+                let id = $('#id_edit').val();
+                if(!e.isDefaultPrevented()){
+                    $.ajax({
+                        url : "products/"+id,
+                        type : "PATCH",
+                        data : $('#modal-edit-form form').serialize(),
+                        success : function(data){
+                            $('#modal-edit-form').modal('hide');
+                            location.reload();
                         },
                         error : function(){
                             alert("Tidak dapat menyimpan data!");
@@ -136,23 +155,20 @@
         }
 
         function editForm(id){
-            save_method = "edit";
-            $('input[name = _method]').val("PATCH");
-            $('#modal-form form')[0].reset();
             $.ajax({
                 url: "products/"+id,
                 type : "GET",
                 dataType : "JSON",
                 success:function (data){
-                    $('#modal-form').modal('show');
+                    $('#modal-edit-form').modal('show');
                     $('.modal-title').text('Edit Produk');
-                    $('#id').val(data.id);
-                    $('#nama_produk').val(data.nama);
-                    $('#kategori').val(data.kategori_id).change();
-                    $('#stok').val(data.jumlah_stok);
-                    $('#harga').val(data.harga);
-                    $('#berat').val(data.berat);
-                    $('#keterangan').val(data.keterangan);
+                    $('#id_edit').val(data.id);
+                    $('#nama_edit').val(data.nama);
+                    $('#kategori_edit').val(data.kategori_id).change();
+                    $('#stok_edit').val(data.jumlah_stok);
+                    $('#harga_edit').val(data.harga);
+                    $('#berat_edit').val(data.berat);
+                    $('#keterangan_edit').val(data.keterangan);
                 }
             })
         }
@@ -188,7 +204,7 @@
                     data : {'_method' : 'DELETE', '_token' : $('meta[name=csrf-token]').attr('content')},
                     success : function(data){
                         $('#smallModal').modal('hide');
-                        location.reload();
+                        // location.reload();
 
                     },
                     error : function(){

@@ -20,10 +20,12 @@ use App\Http\Controllers\UserController;
 */
 
 Auth::routes();
-Route::get('/', [DashboardController::class, 'index'])->name('home');
-Route::resource('products', ProductController::class);
-Route::resource('categories', KategoriController::class);
-Route::resource('penjualan', PenjualanController::class);
-Route::get('penjualan/detail/{id}', [PenjualanController::class, 'detail_pesanan'])->name('pesanan.detail');
-Route::resource('users', UserController::class);
+Route::middleware('auth')->group(function(){
+    Route::get('/', [DashboardController::class, 'index'])->name('home');
+    Route::resource('products', ProductController::class);
+    Route::resource('categories', KategoriController::class);
+    Route::resource('penjualan', PenjualanController::class);
+    Route::get('penjualan/detail/{id}', [PenjualanController::class, 'detail_pesanan'])->name('pesanan.detail');
+    Route::resource('users', UserController::class);
+});
 

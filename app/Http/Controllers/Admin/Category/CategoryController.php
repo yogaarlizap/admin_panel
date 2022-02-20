@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin\Category;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -35,7 +37,20 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'kategori' => 'required',
+            'gambar' => 'required',
+        ]);
+
+        $nama_gambar = $request->file('gambar')->getClientOriginalName();
+
+        $request->file('gambar')->storeAs('/public/images/kategori', $nama_gambar);
+
+        $kategori = new Category;
+        $kategori->nama = $request->kategori;
+        $kategori->gambar = $nama_gambar;
+        $kategori->save();
     }
 
     /**

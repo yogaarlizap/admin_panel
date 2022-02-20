@@ -13,7 +13,7 @@
         <li class="nav-item">
             <a href="{{ route('penjualan.index') }}" class="nav-link {{ setActive('penjualan.index') }}">
                 <i class="nav-icon fas fa-list-alt"></i>
-                <p>Penjualan</p>
+                <p>Pesanan</p>
             </a>
         </li>
 
@@ -29,17 +29,19 @@
             <a href="{{ route('categories.index') }}"
                 class="nav-link {{ setActive('categories.index') }}">
                 <i class="nav-icon fas fa-folder"></i>
-                <p>Category</p>
+                <p>Kategori</p>
             </a>
         </li>
 
-        <li class="nav-item">
-            <a href="{{ route('users.index') }}"
-                class="nav-link {{ setActive('users.index') }}">
-                <i class="nav-icon fas fa-folder"></i>
-                <p>User</p>
-            </a>
-        </li>
+        @if (Auth::user()->level === 1)
+            <li class="nav-item">
+                <a href="{{ route('users.index') }}"
+                    class="nav-link {{ setActive('users.index') }}">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>Akun</p>
+                </a>
+            </li>
+        @endif
 
         <li class="nav-item">
             <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();

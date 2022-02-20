@@ -75,16 +75,57 @@
         </div>
     </div>
 
-    @include('admin.categories.form')
+    {{-- @include('admin.categories.form') --}}
+    @include('admin.categories.formEdit')
 @endsection
 
 @section('script')
     <script>
+        var table, save_method;
         $(function(){
-            $('#kategori_table').DataTable();
+            table = $('#kategori_table').DataTable();
+
+            // $('#modal-form form').validator().on('submit', function(e){
+            //     if(!e.isDefaultPrevented()){
+            //         $.ajax({
+            //             url : "{{ route('categories.store') }}",
+            //             type : "POST",
+            //             data : new FormData(this),
+            //             success : function(data){
+            //                 $('#modal-form').modal('hide');
+            //                 table.ajax.reload();
+            //             },
+            //             error : function(){
+            //                 alert("Tidak dapat menyimpan data!");
+            //             }
+            //         });
+            //         return false;
+            //     }
+            // });
+
+            $('#modal-formEdit #edit_kategori').validator().on('submit', function(e){
+            let id = $('#id_edit').val();
+            if(!e.isDefaultPrevented()){
+                $.ajax({
+                    url : "categories/"+id,
+                    type : "PATCH",
+                    data : new FormData(this),
+                    success : function(data){
+                        $('#modal-formEdit').modal('hide');
+                        // location.reload();
+                    },
+                    error : function(){
+                        alert("Tidak dapat menyimpan data!");
+                    }
+                });
+                return false;
+            }
+            });
         })
 
         function addForm(){
+            save_method = "add";
+            $('input[name = _method]').val("POST");
             $('#modal-form').modal('show');
             $('#modal-form form')[0].reset();
             $('.modal-title').html('Buat Kategori Baru');
@@ -96,9 +137,10 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function(data){
-                    $('#modal-form').modal('show');
+                    $('#modal-formEdit').modal('show');
                     $('.modal-title').html('Edit Kategori');
-                    $('#kategori').val(data.nama);
+                    $('#id_edit').val(data.id);
+                    $('#kategori_edit').val(data.nama);
                 },
                 error: function(){
                     alert('Gagal Ambil Data!');

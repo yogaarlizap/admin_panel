@@ -59,6 +59,7 @@ class ProductController extends Controller
         $product = new Product;
         $product->nama = $request->nama_produk;
         $product->kategori_id = $request->kategori;
+        $product->harga = $request->harga;
         $product->jumlah_stok = $request->stok;
         $product->berat = $request->berat;
         $product->gambar = $nama_gambar;
@@ -99,28 +100,27 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         $validator = Validator::make($request->all(), [
-            'nama_produk' => 'required',
-            'kategori' => 'required',
-            'stok' => 'required',
-            'harga' => 'required',
-            'berat' => 'required',
-            'gambar' => 'required',
-            'keterangan' => 'required',
+            'nama_edit' => 'required',
+            'kategori_edit' => 'required',
+            'stok_edit' => 'required',
+            'harga_edit' => 'required',
+            'berat_edit' => 'required',
+            // 'gambar_edit' => 'required',
+            'keterangan_edit' => 'required',
         ]);
+        // $nama_gambar = $request->file('gambar_edit')->getClientOriginalName();
 
-        $nama_gambar = $request->file('gambar')->getClientOriginalName();
-
-        $request->file('gambar')->storeAs('C:\xampp\htdocs\nara-etnic\public\assets\product', $nama_gambar);
+        // $request->file('gambar_edit')->storeAs('/public/images/product', $nama_gambar);
 
         $product = Product::find($id);
-        $product->nama = $request->nama_produk;
-        $product->kategori_id = $request->kategori;
-        $product->jumlah_stok = $request->stok;
-        $product->berat = $request->berat;
-        $product->gambar = $nama_gambar;
-        $product->keterangan = $request->keterangan;
+        $product->nama = $request->nama_edit;
+        $product->kategori_id = $request->kategori_edit;
+        $product->jumlah_stok = $request->stok_edit;
+        $product->harga = $request->harga_edit;
+        $product->berat = $request->berat_edit;
+        // $product->gambar = $nama_gambar;
+        $product->keterangan = $request->keterangan_edit;
         $product->update();
     }
 
