@@ -204,7 +204,7 @@
                     data : {'_method' : 'DELETE', '_token' : $('meta[name=csrf-token]').attr('content')},
                     success : function(data){
                         $('#smallModal').modal('hide');
-                        // location.reload();
+                        location.reload();
 
                     },
                     error : function(){

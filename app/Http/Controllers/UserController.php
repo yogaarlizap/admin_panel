@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->level === 1){
+        if(Auth::user()->level == 1){
             $users = User::where('level', '!=', '3')->get();
             $no = 0;
 

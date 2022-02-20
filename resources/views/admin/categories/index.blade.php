@@ -152,6 +152,24 @@
             $('#smallModal').modal('show');
             $('.modal-title-delete').html('Delete Kategori');
             $('#text').html('Anda yakin ingin menghapus kategori?');
+            $('#smallModal').validator().on('click','#button', function(e){
+            if(!e.isDefaultPrevented()){
+                $.ajax({
+                    url : "categories/"+id,
+                    type : "POST",
+                    data : {'_method' : 'DELETE', '_token' : $('meta[name=csrf-token]').attr('content')},
+                    success : function(data){
+                        $('#smallModal').modal('hide');
+                        location.reload();
+
+                    },
+                    error : function(){
+                        alert("Tidak dapat menghapus data!");
+                    }
+                });
+                return false;
+            }
+            });
         }
     </script>
 @endsection

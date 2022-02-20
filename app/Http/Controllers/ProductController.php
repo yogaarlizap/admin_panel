@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category\Category;
 use App\Models\Product\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -65,6 +66,8 @@ class ProductController extends Controller
         $product->gambar = $nama_gambar;
         $product->keterangan = $request->keterangan;
         $product->save();
+
+        return Redirect()->route('products.index');
     }
 
     /**

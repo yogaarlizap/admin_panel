@@ -33,7 +33,7 @@
             </a>
         </li>
 
-        @if (Auth::user()->level === 1)
+        @if (Auth::user()->level == 1)
             <li class="nav-item">
                 <a href="{{ route('users.index') }}"
                     class="nav-link {{ setActive('users.index') }}">
