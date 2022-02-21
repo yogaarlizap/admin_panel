@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class KategoriController extends Controller
 {
@@ -45,6 +46,8 @@ class KategoriController extends Controller
         $kategori->nama = $request->kategori;
         $kategori->gambar = $nama_gambar;
         $kategori->save();
+
+        return Redirect()->route('categories.index');
     }
 
     /**

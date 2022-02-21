@@ -31,7 +31,7 @@
                                 <th class="text-center">Berat(Kg)</th>
                                 <th class="text-center">Kode Unik</th>
                                 <th class="text-center">Total Harga</th>
-                                <th class="text-center">Dibayarkan</th>
+                                <th class="text-center">Alamat</th>
                                 <th class="text-center">Pembeli</th>
                                 <th class="text-center" width="100">Aksi</th>
                             </tr>
@@ -66,7 +66,7 @@
                                         {{ "Rp. ".number_format($list->total_harga) }}
                                     </td>
                                     <td class="text-center">
-                                        {{ "Rp. ".number_format($list->total_harga+$list->kode_unik) }}
+                                        {{ $list->user->alamat }}
                                     </td>
                                     <td class="text-center">
                                         {{ $list->user->name }}
