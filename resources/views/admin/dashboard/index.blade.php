@@ -16,7 +16,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h4>Info Penjualan</h4>
+                    <h4>Total Pesanan</h4>
 
                     <h5 id="sales_order">{{ $pesanan }}</h5>
                 </div>

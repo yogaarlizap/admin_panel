@@ -25,6 +25,6 @@
         </div>
     </form> --}}
 
-    @include('layouts.notification')
+    {{-- @include('layouts.notification') --}}
 </nav>
 <!-- /.navbar -->
