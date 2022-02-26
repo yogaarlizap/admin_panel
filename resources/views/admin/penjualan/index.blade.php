@@ -54,6 +54,8 @@
                                             Sedang Dikirim
                                         @elseif ($list->status == 4)
                                             Selesai
+                                        @elseif ($list->status == 0)
+                                            Keranjang
                                         @endif
                                     </td>
                                     <td class="text-center">
